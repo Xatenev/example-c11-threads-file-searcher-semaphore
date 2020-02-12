@@ -36,10 +36,10 @@ int worker_start(struct thread_arg *arg)
 
     for (int i = 0; i < file_list.length; i++)
     {
-        mtx_lock(&result_list_lock);
+        sem_wait(&sem);
         strcpy(result_list[result_list_index], file_list.entries[i]);
         result_list_index++;
-        mtx_unlock(&result_list_lock);
+        sem_post(&sem);
     }
 
     fprintf(stdout, "Worker %d finished handling path: %s\n", arg->id, arg->path);

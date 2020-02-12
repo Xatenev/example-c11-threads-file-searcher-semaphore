@@ -10,6 +10,7 @@
 #include <threads.h>
 #endif
 
+#include "semaphore.h"
 #include "worker.h"
 #include "shared.h"
 
@@ -26,7 +27,7 @@ int main(int argc, char *argv[])
         return -1;
     }
 
-    mtx_init(&result_list_lock, mtx_plain);
+    sem_init(&sem, 2);
     thrd_t threads[argc - 2];
 
     for (int i = 2; i < argc; i++)
@@ -50,7 +51,7 @@ int main(int argc, char *argv[])
         }
     }
 
-    mtx_destroy(&result_list_lock);
+    sem_destroy(&sem);
 
     if (result_list_index == 0)
     {
